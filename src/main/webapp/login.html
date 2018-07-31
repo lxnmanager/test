@@ -1,0 +1,63 @@
+<!doctype html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui.form小例子</title>
+    <link rel="stylesheet" href="media/layui/css/layui.css" media="all">
+    <script src="media/layui/layui.js" ></script>
+    <script src="media/js/jquery.min.js"></script>
+
+</head>
+<body>
+<form class="layui-form" id="form1" > <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名：</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" placeholder="请输入" lay-verify="username" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码：</label>
+        <div class="layui-input-block">
+            <input type="number" name="password" placeholder="请输入" lay-verify="password" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit type="button"  lay-filter="l">登录</button>
+        </div>
+    </div>
+    <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+</form>
+
+<script>
+    layui.use('form', function(){
+
+    var form = layui.form;
+        form.on('submit(l)', function(data){
+            console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+            console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            register();
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+    function register() {
+        var user = $("#form1").serialize()
+        // alert(123)
+        $.ajax({
+            type:"post",
+            url:"login.do",
+            data: user,
+            success:function (result) {
+                if (result=="ok"){
+                    alert("登录成功")
+                } else {
+                    alert("登录失败")
+                }
+            }
+        })
+    }
+</script>
+</body>
